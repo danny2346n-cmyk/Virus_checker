@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Virus Checker DApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 0; background: #050816; color: #f3f4f6; }
+      header { padding: 1rem 1.5rem; border-bottom: 1px solid #111827; background: #020617; }
+      h1 { margin: 0; font-size: 1.4rem; }
+      main { display: grid; grid-template-columns: 1.2fr 1.1fr 1.2fr; gap: 1rem; padding: 1rem; min-height: calc(100vh - 64px); box-sizing: border-box; }
+      section { background: #020617; border-radius: 0.5rem; border: 1px solid #1f2937; padding: 0.75rem 0.9rem; display: flex; flex-direction: column; }
+      section h2 { font-size: 1rem; margin-top: 0; margin-bottom: 0.4rem; }
+      label { display: block; font-size: 0.8rem; margin-top: 0.4rem; margin-bottom: 0.15rem; color: #9ca3af; }
+      input, textarea, select { width: 100%; box-sizing: border-box; padding: 0.35rem 0.45rem; border-radius: 0.35rem; border: 1px solid #374151; background: #020617; color: #e5e7eb; font-size: 0.8rem; }
+      textarea { resize: vertical; min-height: 70px; }
+      button { margin-top: 0.5rem; padding: 0.45rem 0.7rem; border-radius: 0.35rem; border: none; background: #22c55e; color: #020617; font-weight: 600; cursor: pointer; font-size: 0.8rem; align-self: flex-start; }
+      button.secondary { background: transparent; border: 1px solid #4b5563; color: #e5e7eb; margin-left: 0.4rem; }
+      ul { list-style: none; padding: 0; margin: 0.3rem 0 0; font-size: 0.8rem; overflow-y: auto; }
+      li { padding: 0.35rem 0.4rem; border-radius: 0.35rem; border: 1px solid #111827; margin-bottom: 0.25rem; cursor: pointer; }
+      li.active { border-color: #22c55e; background: #022c22; }
+      small { font-size: 0.72rem; color: #9ca3af; }
+      .row { display: flex; gap: 0.4rem; align-items: center; }
+      .grow { flex: 1; }
+      .badge { display: inline-flex; align-items: center; justify-content: center; padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.7rem; border: 1px solid #374151; margin-left: 0.3rem; }
+      .badge-open { background: #052e16; border-color: #22c55e; }
+      .badge-closed { background: #1f2937; }
+      .logs { flex: 1; overflow-y: auto; font-size: 0.75rem; border-radius: 0.35rem; border: 1px dashed #1f2937; padding: 0.3rem 0.4rem; background: #020617; margin-top: 0.4rem; }
+      .logs div { margin-bottom: 0.2rem; }
+      footer-note { font-size: 0.7rem; color: #6b7280; }
+      @media (max-width: 960px) {
+        main { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Virus Checker DApp <small>multi-scanner file hash verdicts with bounties</small></h1>
+    </header>
+    <main>
+      <section id="open-request">
+        <h2>1. Submit file hash for scanning</h2>
+        <label for="file-hash">File hash (SHA-256, hex)</label>
+        <input id="file-hash" placeholder="e.g. 4a98..." />
+        <label for="bounty">Bounty (uSTX on devnet)</label>
+        <input id="bounty" type="number" min="0" step="1" value="100" />
+        <div class="row">
+          <button id="btn-open-request">Open scan request</button>
+          <button class="secondary" id="btn-refresh-summaries">Refresh recent summaries</button>
+        </div>
+        <div class="logs" id="open-request-log"></div>
+      </section>
+      <section id="open-requests">
+        <h2>2. Open scan requests</h2>
+        <small>Scanners pick requests here and submit verdicts.</small>
+        <ul id="requests-list"></ul>
+        <div class="logs" id="requests-log"></div>
+      </section>
+      <section id="request-detail">
+        <h2>3. Request detail & scanner verdict</h2>
+        <div id="selected-request-meta">
+          <small>No request selected.</small>
+        </div>
+        <hr />
+        <label for="verdict">Verdict</label>
+        <select id="verdict">
+          <option value="clean">Clean</option>
+          <option value="infected">Infected</option>
+        </select>
+        <label for="details">Details / signature name</label>
+        <textarea id="details" placeholder="e.g. Generic.Trojan.123 or reasoning for clean verdict"></textarea>
+        <div class="row">
+          <button id="btn-submit-result">Submit scanner result</button>
+          <button class="secondary" id="btn-finalize">Finalize request</button>
+        </div>
+        <div class="logs" id="detail-log"></div>
+      </section>
+    </main>
+    <script type="module" src="./app.ts"></script>
+  </body>
+</html>
